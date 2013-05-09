@@ -6,7 +6,7 @@ import echonest.remix.audio as audio
 import pyrax
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="public", static_url_path="/static")
 pyrax.set_credential_file('pyrax.conf')
 cf = pyrax.cloudfiles
 
@@ -33,9 +33,9 @@ def upload():
 
         out = audio.getpieces(remixfile, sortedbeats)
 
-        audioname = str(long(time.time())) + 'sorted' + secure_filename(audiofile.filename) + '.wav'
+        audioname = str(long(time.time())) + 'sorted' + secure_filename(audiofile.filename) + '.mp3'
         outfname = 'tmp/' + audioname
-        out.encode(outfname, mp3=False)
+        out.encode(outfname, mp3=True)
 
         #Upload to rackspace
         chksum = pyrax.utils.get_checksum(outfname)
